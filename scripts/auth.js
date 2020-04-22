@@ -1,14 +1,15 @@
 //listen for Auth status changes
 auth.onAuthStateChanged((user) => {
   if (user) {
-    db.collection('guides')
-      .onSnapshot((snapshot) => {
+    db.collection('guides').onSnapshot(
+      (snapshot) => {
         setupUI(user);
         setupGuides(snapshot.docs);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   } else {
     setupUI();
     setupGuides([]);
@@ -38,7 +39,6 @@ createForm.addEventListener('submit', (e) => {
 
 //Signup
 const signupForm = document.querySelector('#signup-form');
-
 signupForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -50,6 +50,11 @@ signupForm.addEventListener('submit', (e) => {
   auth
     .createUserWithEmailAndPassword(email, password)
     .then((cred) => {
+      return db.collection('users').doc(cred.user.uid).set({
+        bio: signupForm['signup-bio'].value,
+      });
+    })
+    .then(() => {
       const modal = document.querySelector('#modal-signup');
       M.Modal.getInstance(modal).close();
       signupForm.reset();
