@@ -1,3 +1,13 @@
+//get data
+db.collection('guides')
+  .get()
+  .then((snapshot) => {
+    setupGuides(snapshot.docs);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
 //liste for Auth status changes
 auth.onAuthStateChanged((user) => {
   if (user) {
