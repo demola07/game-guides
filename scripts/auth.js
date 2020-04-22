@@ -1,15 +1,10 @@
 //listen for Auth status changes
 auth.onAuthStateChanged((user) => {
   if (user) {
-    db.collection('guides')
-      .get()
-      .then((snapshot) => {
-        setupUI(user);
-        setupGuides(snapshot.docs);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    db.collection('guides').onSnapshot((snapshot) => {
+      setupUI(user);
+      setupGuides(snapshot.docs);
+    });
   } else {
     setupUI();
     setupGuides([]);
