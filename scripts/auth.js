@@ -9,10 +9,29 @@ signupForm.addEventListener('submit', (e) => {
   const password = signupForm['signup-password'].value;
 
   //Signup user
-  auth.createUserWithEmailAndPassword(email, password).then((cred) => {
-    console.log(cred.user);
-    const modal = document.querySelector('#modal-signup');
-    M.Modal.getInstance(modal).close();
-    signupForm.reset();
-  });
+  auth
+    .createUserWithEmailAndPassword(email, password)
+    .then((cred) => {
+      const modal = document.querySelector('#modal-signup');
+      M.Modal.getInstance(modal).close();
+      signupForm.reset();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+//logout
+const logout = document.querySelector('#logout');
+logout.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  auth
+    .signOut()
+    .then(() => {
+      console.log('Logged Out');
+    })
+    .catch((err) => {
+      console.log(er);
+    });
 });
