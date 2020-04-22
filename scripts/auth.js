@@ -4,12 +4,14 @@ auth.onAuthStateChanged((user) => {
     db.collection('guides')
       .get()
       .then((snapshot) => {
+        setupUI(user);
         setupGuides(snapshot.docs);
       })
       .catch((err) => {
         console.log(err);
       });
   } else {
+    setupUI();
     setupGuides([]);
   }
 });
